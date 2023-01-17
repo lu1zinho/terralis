@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:terralis/components/flutter_utils.dart';
 import 'package:terralis/components/full_screen_loading.dart';
-import 'package:terralis/no_commit/components/progress.dart';
-import 'package:terralis/components/utils.dart';
+import 'package:terralis/components/progress.dart';
+import 'package:terralis/components/dart_utils.dart';
 import 'package:terralis/database/dao/receipt_dao.dart';
 import 'package:terralis/http/gsheets.dart';
 import 'package:terralis/models/receipt.dart';
@@ -103,11 +104,11 @@ class _ReceiptsListState extends State<ReceiptsList> {
     FocusScope.of(context).unfocus();
     FullScreenLoading(context).start();
     try {
-      await gsheetsSync();
+      await gsheetsReceiptsSync();
       setState(() {});
-      Utils.showSnackBar(context, 'Sincronizado com sucesso');
+      FlutterUtils.showSnackBar(context, 'Sincronizado com sucesso');
     } on Exception catch (e) {
-      FullScreenLoading(context).showError(e);
+      FlutterUtils.showErrorSnackBar(context, e);
     }
     FullScreenLoading(context).stop();
   }
@@ -136,7 +137,7 @@ class _ReceiptItem extends StatelessWidget {
       child: ListTile(
         onTap: () => onClick(),
         title: Text(
-          '${Utils.dateToString(receipt.date)} ${receipt.description}',
+          '${DartUtils.dateToString(receipt.date)} ${receipt.description}',
           style: const TextStyle(fontSize: 16.0),
         ),
       ),

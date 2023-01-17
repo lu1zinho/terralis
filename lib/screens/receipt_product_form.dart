@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:terralis/components/flutter_utils.dart';
 import 'package:terralis/components/number_form_field.dart';
-import 'package:terralis/components/utils.dart';
 import 'package:terralis/database/dao/receipt_product_dao.dart';
 import 'package:terralis/models/receipt.dart';
 import 'package:terralis/models/receipt_product.dart';
@@ -53,7 +53,7 @@ class _ReceiptProductFormState extends State<ReceiptProductForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: TextFormField(
-                  validator: (value) => Utils.validateNotEmpty(value),
+                  validator: (value) => FlutterUtils.validateNotEmpty(value),
                   enabled: widget.isNotHistory,
                   controller: _productController,
                   decoration: const InputDecoration(labelText: 'Produto'),
@@ -63,7 +63,7 @@ class _ReceiptProductFormState extends State<ReceiptProductForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: NumberFormField(
-                  validator: (value) => Utils.validateNotEmpty(value),
+                  validator: (value) => FlutterUtils.validateNotEmpty(value),
                   enabled: widget.isNotHistory,
                   controller: _priceController,
                   label: 'Valor recebido',

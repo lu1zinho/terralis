@@ -1,6 +1,6 @@
-import 'package:terralis/screens/receipts_list.dart';
-import 'package:terralis/no_commit/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
+import 'package:terralis/screens/formulas_tabs_list.dart';
+import 'package:terralis/screens/receipts_list.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class Dashboard extends StatelessWidget {
             padding: const EdgeInsets.all(24.0),
             child: Image.asset('images/terralis L2.png'),
           ),
-          Container(
+          SizedBox(
             height: 120,
             child: ListView(
               scrollDirection: Axis.horizontal,
@@ -30,11 +30,15 @@ class Dashboard extends StatelessWidget {
                   Icons.monetization_on,
                   onClick: () => _showReceiptsList(context),
                 ),
-                /*_FeatureItem(
-                  'Transaction Feed',
+                _FeatureItem(
+                  'Receitas Terralis',
                   Icons.description,
-                  onClick: () => _showTransactionList(context),
-                ),*/
+                  onClick: () => _showFormulasTabsList(context, 'Terralis'),
+                ),_FeatureItem(
+                  'Receitas Yoga-se',
+                  Icons.description,
+                  onClick: () => _showFormulasTabsList(context, 'Yoga-se'),
+                ),
               ],
             ),
           ),
@@ -51,10 +55,10 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  _showTransactionList(BuildContext context) {
+  _showFormulasTabsList(BuildContext context, String id) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const TransactionsList(),
+        builder: (context) => FormulasTabsList(id),
       ),
     );
   }

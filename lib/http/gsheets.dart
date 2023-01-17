@@ -1,5 +1,5 @@
 import 'package:gsheets/gsheets.dart';
-import 'package:terralis/components/utils.dart';
+import 'package:terralis/components/dart_utils.dart';
 import 'package:terralis/database/dao/receipt_dao.dart';
 import 'package:terralis/database/dao/receipt_product_dao.dart';
 import 'package:terralis/models/receipt.dart';
@@ -28,7 +28,7 @@ const _credentials = r'''
 /// [YOUR_SPREADSHEET_ID] in the path is the id your need
 const _spreadsheetId = '1hA3erUh-P8K-Vs03PaM3UUIiS0HKFGK4-tblEejz0k0';
 
-Future<void> gsheetsSync() async {
+Future<void> gsheetsReceiptsSync() async {
   ReceiptDao receiptDao = ReceiptDao();
   List<Receipt> receipts = await receiptDao.findAllUnsynchronized();
   if (receipts.isEmpty) {
@@ -52,11 +52,11 @@ Future<void> gsheetsSync() async {
 
     for (var product in products) {
       list.add({
-        'Data': Utils.dateToString(receipt.date),
-        'Qtd': Utils.numberToCommaString(product.qt),
+        'Data': DartUtils.dateToString(receipt.date),
+        'Qtd': DartUtils.numberToCommaString(product.qt),
         'Produto': product.product,
-        'Preço UN': Utils.numberToCommaString(product.priceUn),
-        'Recebido': Utils.numberToCommaString(product.price),
+        'Preço UN': DartUtils.numberToCommaString(product.priceUn),
+        'Recebido': DartUtils.numberToCommaString(product.price),
         'Informações': receipt.description +
             (product.info.isNotEmpty ? ' - ${product.info}' : ''),
       });

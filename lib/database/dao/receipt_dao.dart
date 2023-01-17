@@ -29,16 +29,13 @@ class ReceiptDao {
   Future<void> updateToSynchronized(List<Receipt> receipts) async {
     final Database db = await getDatabase();
     var listIds = receipts.map((e) => e.id.toString()).toList();
-    print('receipts.length: ${receipts.length}');
-    print('listIds: $listIds');
 
-    var i = await db.update(
+    await db.update(
       Receipt.tableName,
       {Receipt.colSynchronized: 1},
       where: '${Receipt.colId} IN (${List.filled(listIds.length, '?').join(',')})',
       whereArgs: listIds,
     );
-    print('rows updated: $i');
   }
 
   Future<List<Receipt>> _findAll(bool synchronized) async {

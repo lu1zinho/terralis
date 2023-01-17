@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:terralis/no_commit/components/progress.dart';
+import 'package:terralis/components/progress.dart';
 import 'package:terralis/database/dao/receipt_dao.dart';
 import 'package:terralis/database/dao/receipt_product_dao.dart';
 import 'package:terralis/models/receipt.dart';
@@ -22,6 +22,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
   final ReceiptDao _dao = ReceiptDao();
   final ReceiptProductDao _productDao = ReceiptProductDao();
   Receipt? _receipt;
+  bool _disabled = true;
 
   @override
   void initState() {
@@ -64,10 +65,12 @@ class _ReceiptFormState extends State<ReceiptForm> {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      await _createOrUpdateReceipt();
-                      Navigator.pop(context);
-                    },
+                    onPressed: _disabled
+                        ? null
+                        : () async {
+                            await _createOrUpdateReceipt();
+                            Navigator.pop(context);
+                          },
                     child: const Text('Concluir'),
                   ),
                 ),
@@ -112,6 +115,15 @@ class _ReceiptFormState extends State<ReceiptForm> {
                     break;
                   case ConnectionState.done:
                     final List<ReceiptProduct>? products = snapshot.data;
+                    if (products?.isNotEmpty ?? false) {
+                      if (_disabled) {
+                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          setState(() {
+                            _disabled = false;
+                          });
+                        });
+                      }
+                    }
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const ClampingScrollPhysics(),
@@ -119,7 +131,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
                         final ReceiptProduct product = products![index];
                         return _ReceiptProductItem(
                           product,
-                          onClick: () => _saveReceiptShowReceiptProductForm(context, product),
+                          onClick: () => _saveReceiptShowReceiptProductForm(
+                              context, product),
                         );
                       },
                       itemCount: products?.length ?? 0,
@@ -143,7 +156,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
     );
   }
 
-  void _saveReceiptShowReceiptProductForm(BuildContext context, ReceiptProduct? product) {
+  void _saveReceiptShowReceiptProductForm(
+      BuildContext context, ReceiptProduct? product) {
     _createOrUpdateReceipt();
     Navigator.of(context)
         .push(
