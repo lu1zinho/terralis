@@ -14,6 +14,8 @@ class GsheetsFormulasStock {
   // static const _stockTabName = 'TESTE';
 
   static const _historyTabName = 'Histórico';
+  static const _columnFormulaInfo = 5;
+
   final _gsheets = GSheets(_credentials);
   final String _sheetName;
   Spreadsheet? _ss;
@@ -41,7 +43,7 @@ class GsheetsFormulasStock {
   }
 
   Future<List<FormulaQt>> getFormulasNames(Worksheet s) async {
-    _mapFormulas = await _getCellsMap(s, columnCount: 5);
+    _mapFormulas = await _getCellsMap(s, columnCount: _columnFormulaInfo);
     var listQtd = _mapFormulas!['Qtd %']!;
     var listQtdUnit = _mapFormulas!['Qtd final']!;
     var listInfo = _mapFormulas!['Informações']!;
@@ -52,8 +54,8 @@ class GsheetsFormulasStock {
       var cellValue = cell.value.trim();
       if (cellValue.isNotEmpty && double.tryParse(cellValue) == null) {
         int indexCell = cell.row - 1;
-        listFormulaQt.add(FormulaQt(cell, listQtdUnit[indexCell].value.trim(),
-            listInfo[indexCell].value.trim()));
+        listFormulaQt.add(FormulaQt(cell, _getCellValue(listQtdUnit, indexCell),
+            _getCellValue(listInfo, indexCell)));
       }
     }
 
@@ -180,135 +182,6 @@ class GsheetsFormulasStock {
 
     return _hasError;
   }
-
-  /*
-  Future<bool> produceFormulaBackup(Worksheet wTab, Cell cellFormulaName,
-      {bool stockWriteOff = true}) async {
-    _wStock = await _getWorksheet(_idStock, _stockTabName);
-    _wHistory = await _getWorksheet(_idStock, _historyTabName);
-    _mapStock = await _getCellsMap(_wStock!, columnCount: 15);
-    _listFormulaIngredient = [];
-    _listHistory = [History()]; //criar assim p/ ter uma separação no historico
-    _hasError = false;
-
-    var listCellStockQt = _mapStock!['Peso']!;
-    var listIngredient = _getIngredients(cellFormulaName);
-    var listCellStockProduct = _mapStock!['Produto']!;
-
-    for (var ingredient in listIngredient) {
-      if (ingredient.name.isEmpty) {
-        continue;
-      }
-
-      double qtUsed;
-      try {
-        qtUsed = _getQtUsedBackup(ingredient.row);
-      } on Exception {
-        _addHistory(History(
-            formula: cellFormulaName.value,
-            ingredient: ingredient.name,
-            status: 'INGREDIENTE VAZIO/ZERADO NA RECEITA'));
-        _addPriceNotFound(ingredient, 0);
-        continue;
-      }
-      double qtNotUsed = 0;
-      var found = false;
-
-      for (var cellStockProduct in listCellStockProduct) {
-        if (cellStockProduct.value.contains(ingredient.name)) {
-          // o numero do row inicia em 1 e o numero do indice inicia em 0, portanto subtrair 1
-          int indexStockProduct = cellStockProduct.row - 1;
-          var cellStockQt = listCellStockQt[indexStockProduct];
-          var stockQt = DartUtils.tryParseCommaDouble(cellStockQt.value);
-          if (stockQt == null) {
-            continue;
-          }
-          if (qtNotUsed > 0) {
-            qtUsed = qtNotUsed;
-          }
-
-          try {
-            qtNotUsed = await _writeOff(
-                cellStockQt, stockQt, qtUsed, indexStockProduct,
-                stockWriteOff: stockWriteOff);
-
-            var priceKgLUn = _getPriceKgLUn(indexStockProduct);
-            var unit = _getUnit(indexStockProduct);
-            double? value;
-            String message = '';
-            try {
-              value = _getValue(
-                  priceKgLUn, unit, qtUsed - qtNotUsed, indexStockProduct);
-            } on FormatException catch (e) {
-              message = e.message;
-            }
-
-            _addHistory(
-              History(
-                  formula: cellFormulaName.value,
-                  ingredient: ingredient.name,
-                  nameInStock: cellStockProduct.value,
-                  initialQt: qtUsed,
-                  used: qtUsed - qtNotUsed,
-                  oldQtStock: stockQt,
-                  newCell: cellStockQt.toString(),
-                  priceKgLUn: priceKgLUn,
-                  unit: unit,
-                  value: value,
-                  status: _getStatusHistory(qtNotUsed, true, message: message)),
-            );
-
-            _addPrice(ingredient, indexStockProduct, qtUsed - qtNotUsed,
-                cellStockProduct);
-
-            if (qtNotUsed == 0) {
-              found = true;
-              break;
-            }
-          } on Exception catch (e) {
-            _hasError = true;
-            _addHistory(History(
-              formula: cellFormulaName.value,
-              ingredient: ingredient.name,
-              nameInStock: cellStockProduct.value,
-              used: qtUsed,
-              oldQtStock: stockQt,
-              newCell: cellStockQt.toString(),
-              status: _getStatusHistory(qtNotUsed, true),
-              error: _formatException(e),
-            ));
-          }
-        }
-      }
-      if (!found) {
-        _addHistory(History(
-          formula: cellFormulaName.value,
-          ingredient: ingredient.name,
-          initialQt: qtUsed,
-          used: qtNotUsed,
-          status: _getStatusHistory(qtNotUsed, false),
-        ));
-        _addPriceNotFound(ingredient, qtUsed);
-      }
-    }
-
-    await synchronizeHistory(_listHistory);
-
-    try {
-      await _insertPromptDelivery(cellFormulaName, listIngredient);
-    } on Exception catch (e) {
-      _hasError = true;
-      await _addHistory(
-          History(
-              formula: cellFormulaName.value,
-              status: 'NAO FOI PRA PRONTA-ENTREGA',
-              error: _formatException(e)),
-          addListHistory: false,
-          synchronize: true);
-    }
-    return _hasError;
-  }
-  */
 
   Future<void> _insertPromptDelivery(
       Cell cellFormulaName, bool stockWriteOff) async {
@@ -452,7 +325,7 @@ class GsheetsFormulasStock {
     // o numero do row inicia em 1 e o numero do indice inicia em zero, portanto subtrair 1
     int indexIngredient = row - 1;
 
-    var strQt = listQt[indexIngredient].value.trim();
+    var strQt = _getCellValue(listQt, indexIngredient);
     double? qt = double.tryParse(strQt);
     if (qt == null) {
       return strQt;
@@ -474,26 +347,6 @@ class GsheetsFormulasStock {
 
     return double.tryParse(prodIngred.qtG) ?? 0;
   }
-
-  /*
-  double _getQtUsedBackup(int row) {
-    var listQtdFinal = _mapFormulas!['Qtd final']!;
-    var listQtd = _mapFormulas!['Qtd (g)']!;
-
-    // o numero do row inicia em 1 e o numero do indice inicia em zero, portanto subtrair 1
-    int indexIngredient = row - 1;
-
-    var stringQtUsed = listQtdFinal[indexIngredient].value.trim().isNotEmpty
-        ? listQtdFinal[indexIngredient].value.trim()
-        : listQtd[indexIngredient].value.trim();
-
-    var qtUsed = double.parse(stringQtUsed);
-    if (qtUsed == 0) {
-      throw Exception('ingrediente zerado na receita');
-    }
-    return qtUsed;
-  }
-  */
 
   String _getFormulaCostInfos() {
     String infos = '';
@@ -531,9 +384,19 @@ class GsheetsFormulasStock {
       return;
     }
 
+    var listInfo = _mapFormulas!['Informações']!;
+    int index = cellFormulaName.row - 1;
+
     try {
-      int index = cellFormulaName.row - 1;
-      var cellInfo = _mapFormulas!['Informações']![index];
+      if (index >= listInfo.length) {
+        // wTab.values.insertValueByKeys('OK', columnKey: 'Informações', rowKey: cellFormulaName.value, eager: false);
+        if (!await wTab.values
+            .insertValue('OK', column: _columnFormulaInfo, row: index + 1)) {
+          throw Exception('_setOkStockWriteOff: insertValue returned false');
+        }
+        return;
+      }
+      var cellInfo = listInfo[index];
       if (cellInfo.value == 'OK') {
         return;
       }
@@ -621,6 +484,13 @@ class GsheetsFormulasStock {
     return sheet;
   }
 
+  String _getCellValue(List<Cell> listCell, int index) {
+    if (index >= listCell.length) {
+      return '';
+    }
+    return listCell[index].value.trim();
+  }
+
   String _formatException(Exception e) => '${e.runtimeType}: $e';
 }
 
@@ -665,38 +535,6 @@ class FormulaIngredient {
 
   FormulaIngredient.notFound(this.ingredient, this.quantity) {
     name = ingredient;
-    label = unit = '';
-    row = column = -1;
-    offset = 0;
-    priceKgLUn = null;
-  }
-
-  @override
-  String toString() => "$name at $label";
-}
-
-class FormulaIngredientBackup {
-  final Ingredient ingredient;
-  late final String name;
-  late final String label;
-  late final int row;
-  late final int column;
-  late final double? priceKgLUn;
-  late final String unit;
-  late final double offset;
-  final double quantity;
-  String info = '';
-
-  FormulaIngredientBackup(Cell cell, this.ingredient, this.unit,
-      this.priceKgLUn, this.quantity, this.offset) {
-    name = cell.value.trim();
-    row = cell.row;
-    label = cell.label;
-    column = cell.column;
-  }
-
-  FormulaIngredientBackup.notFound(this.ingredient, this.quantity) {
-    name = ingredient.name;
     label = unit = '';
     row = column = -1;
     offset = 0;

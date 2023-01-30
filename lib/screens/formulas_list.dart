@@ -67,50 +67,6 @@ class _FormulasListState extends State<FormulasList> {
     });
   }
 
-/*
-  void _dialogProduceFormula(BuildContext context, FormulaQt formulaQt) {
-    showDialog(
-      context: context,
-      builder: (contextDialog) => ConfirmDialog(
-          '${formulaQt.formula.value}\n'
-              'Quantidade: ${formulaQt.qt}',
-          'Deseja dar baixa?'),
-    ).then((value) async {
-      if (value == 'OK') {
-        await _produceFormula(context, formulaQt);
-      }
-    });
-  }
-
-  Future<void> _produceFormula(
-      BuildContext context, FormulaQt formulaQt) async {
-    FullScreenLoading(context).start();
-    try {
-      bool hasError =
-          await widget._gsheets.produceFormula(widget._wTab, formulaQt.formula);
-      FullScreenLoading(context).stop();
-      if (!hasError) {
-        FlutterUtils.showSnackBar(context, 'Sincronizado com sucesso');
-      } else {
-        showDialog(
-          context: context,
-          builder: (contextDialog) => const WarningMessageDialog(
-            message: 'Sincronização funcionou com erros.\nVeja no histórico.',
-          ),
-        );
-      }
-    } on Exception catch (e) {
-      FullScreenLoading(context).stop();
-      showDialog(
-        context: context,
-        builder: (contextDialog) => FailureMessageDialog(
-          message: 'Erro na sincronização.\nTente novamente.',
-          errorMessage: e.toString(),
-        ),
-      );
-    }
-  }
-  */
 }
 
 class _FormulaItem extends StatelessWidget {
