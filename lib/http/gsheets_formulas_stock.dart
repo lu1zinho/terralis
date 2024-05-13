@@ -4,10 +4,15 @@ import 'package:terralis/database/dao/history_dao.dart';
 import 'package:terralis/models/history.dart';
 
 class GsheetsFormulasStock {
+  // Spreadsheet Produções e fórmulas Terralis
   static const _idFormulasTerralis =
       '1H8JXBeSWvVhZJ1TOVtokF3Ci-j0759-GPBZPEX2oTNI';
+
+  // Spreadsheet Produções e fórmulas Yoga-se
   static const _idFormulasYogase =
       '1gtCQm89K5_iJWxhw6GWVKCrTXYqbMjlCvazx_uRON80';
+
+  // Spreadsheet Controle de estoque Terralis
   static const _idStock = '1qErlo0MGVdyOenoVk9RE2hYPBiH5Rc-gNuU20ExLJPQ';
 
   static const _stockTabName = 'Estoque';
