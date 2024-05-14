@@ -16,7 +16,7 @@ I built a **Web App** just for demonstration, but the SQLite features don't work
 - uuid 3.0.6
 
 ## Functionalities
-- Receipts (Recebimentos).
+- Sales (Recebimentos).
   - Works offline with SQLite database and sends information about sales (ex.: products sold, money received) to Google Sheets.
 - Terralis Recipes (Receitas Terralis)
   - Get information about Terralis recipes types in Google Sheets. Ex.: Soap, Shampoo, Deodorant.
