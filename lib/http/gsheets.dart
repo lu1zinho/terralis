@@ -26,7 +26,12 @@ const _credentials = r'''
 /// It can be found in the link to your spreadsheet -
 /// link looks like so https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit#gid=0
 /// [YOUR_SPREADSHEET_ID] in the path is the id your need
-const _spreadsheetId = '1hA3erUh-P8K-Vs03PaM3UUIiS0HKFGK4-tblEejz0k0';
+
+// Spreadsheet Terralis - Recebimentos e Receitas
+//const _spreadsheetId = '1hA3erUh-P8K-Vs03PaM3UUIiS0HKFGK4-tblEejz0k0';
+
+// Spreadsheet Terralis - Recebimentos e Receitas - DEMO
+const _spreadsheetId = '1j2OfQUXqeHJAPlJfgX58Pc8lnHUc-DatZZ_1BXm-HfA';
 
 Future<void> gsheetsReceiptsSync() async {
   ReceiptDao receiptDao = ReceiptDao();

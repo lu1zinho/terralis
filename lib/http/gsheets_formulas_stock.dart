@@ -5,15 +5,26 @@ import 'package:terralis/models/history.dart';
 
 class GsheetsFormulasStock {
   // Spreadsheet Produções e fórmulas Terralis
+  //static const _idFormulasTerralis =
+  //    '1H8JXBeSWvVhZJ1TOVtokF3Ci-j0759-GPBZPEX2oTNI';
+
+  // Spreadsheet Produções e fórmulas Terralis - DEMO
   static const _idFormulasTerralis =
-      '1H8JXBeSWvVhZJ1TOVtokF3Ci-j0759-GPBZPEX2oTNI';
+      '1MLmRGeQdNhpUDa-XK3kHcmt8pBjYoSih1UdzSd1zNWY';
 
   // Spreadsheet Produções e fórmulas Yoga-se
+  //static const _idFormulasYogase =
+  //    '1gtCQm89K5_iJWxhw6GWVKCrTXYqbMjlCvazx_uRON80';
+
+  // Spreadsheet Produções e fórmulas Yoga-se - DEMO
   static const _idFormulasYogase =
-      '1gtCQm89K5_iJWxhw6GWVKCrTXYqbMjlCvazx_uRON80';
+      '1gq2paysGmBA2XU3coLOkLeR3WTG23VH_dquQErD3le0';
 
   // Spreadsheet Controle de estoque Terralis
-  static const _idStock = '1qErlo0MGVdyOenoVk9RE2hYPBiH5Rc-gNuU20ExLJPQ';
+  //static const _idStock = '1qErlo0MGVdyOenoVk9RE2hYPBiH5Rc-gNuU20ExLJPQ';
+
+  // Spreadsheet Controle de estoque Terralis - DEMO
+  static const _idStock = '1YYI9MWSLOnIsPd5S2ooTrmW8iMtSke-Q4gTL4KzozLQ';
 
   static const _stockTabName = 'Estoque';
   // static const _stockTabName = 'TESTE';
