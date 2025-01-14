@@ -35,6 +35,7 @@ dependencies:
   http_interceptor:
   uuid:
   gsheets: ^0.4.2
+  universal_html: ^2.0.0
 #  decimal: ^2.3.0
 
   # The following adds the Cupertino Icons font to your application.
