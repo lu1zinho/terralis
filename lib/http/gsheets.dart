@@ -25,7 +25,7 @@ Future<void> gsheetsReceiptsSync() async {
     return;
   }
   // init GSheets
-  final gsheets = GSheets(getGoogleCredentials());
+  final gsheets = GSheets(await getGoogleCredentials());
   // fetch spreadsheet by its id
   final ss = await gsheets.spreadsheet(_spreadsheetId);
 

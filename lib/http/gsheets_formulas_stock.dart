@@ -4,6 +4,7 @@ import 'package:terralis/database/dao/history_dao.dart';
 import 'package:terralis/http/google_credentials.dart';
 import 'package:terralis/models/history.dart';
 
+
 class GsheetsFormulasStock {
   // Spreadsheet Produções e fórmulas Terralis
   //static const _idFormulasTerralis =
@@ -34,7 +35,8 @@ class GsheetsFormulasStock {
   static const _historyTabName = 'Histórico';
   static const _columnFormulaInfo = 5;
 
-  final _gsheets = GSheets(getGoogleCredentials());
+  GSheets? _gsheets;
+
   final String _sheetName;
   Spreadsheet? _ss;
   Map<String, List<Cell>>? _mapFormulas;
@@ -48,10 +50,12 @@ class GsheetsFormulasStock {
   GsheetsFormulasStock(this._sheetName);
 
   Future<List<Worksheet>> getFormulasTabs() async {
+    _gsheets ??= GSheets(await getGoogleCredentials());
+
     if (_sheetName == 'Terralis') {
-      _ss = await _gsheets.spreadsheet(_idFormulasTerralis);
+      _ss = await _gsheets!.spreadsheet(_idFormulasTerralis);
     } else if (_sheetName == 'Yoga-se') {
-      _ss = await _gsheets.spreadsheet(_idFormulasYogase);
+      _ss = await _gsheets!.spreadsheet(_idFormulasYogase);
     } else {
       return [];
     }
@@ -496,7 +500,7 @@ class GsheetsFormulasStock {
   }
 
   Future<Worksheet> _getWorksheet(String idSpreadsheet, String wsheet) async {
-    final ss = await _gsheets.spreadsheet(idSpreadsheet);
+    final ss = await _gsheets!.spreadsheet(idSpreadsheet);
     var sheet = ss.worksheetByTitle(wsheet);
     sheet ??= await ss.addWorksheet(wsheet);
     return sheet;
