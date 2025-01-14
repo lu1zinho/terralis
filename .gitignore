@@ -1,5 +1,6 @@
-# NAO COMITAR
+# NO COMMIT
 /lib/no_commit/
+*.env
 
 # Miscellaneous
 *.class

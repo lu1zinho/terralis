@@ -2,9 +2,9 @@ import 'package:gsheets/gsheets.dart';
 import 'package:terralis/components/dart_utils.dart';
 import 'package:terralis/database/dao/receipt_dao.dart';
 import 'package:terralis/database/dao/receipt_product_dao.dart';
+import 'package:terralis/http/google_credentials.dart';
 import 'package:terralis/models/receipt.dart';
 import 'package:terralis/models/receipt_product.dart';
-import 'package:terralis/no_commit/http/webclient.dart';
 
 /// Your spreadsheet id
 ///
@@ -25,7 +25,7 @@ Future<void> gsheetsReceiptsSync() async {
     return;
   }
   // init GSheets
-  final gsheets = GSheets(googleCredentials);
+  final gsheets = GSheets(getGoogleCredentials());
   // fetch spreadsheet by its id
   final ss = await gsheets.spreadsheet(_spreadsheetId);
 
