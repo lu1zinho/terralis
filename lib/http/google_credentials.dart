@@ -1,4 +1,3 @@
-import 'dart:io';
 
 String getGoogleCredentials() {
 
@@ -16,17 +15,17 @@ String getGoogleCredentials() {
   
   String googleCredentials = '''
 {
-  "type": "${type != '' ? type : Platform.environment['TYPE']}",
-  "project_id": "${projectId != '' ? projectId : Platform.environment['PROJECT_ID']}",
-  "private_key_id": "${privateKeyId != '' ? privateKeyId : Platform.environment['PRIVATE_KEY_ID']}",
-  "private_key": "${privateKey != '' ? privateKey : Platform.environment['PRIVATE_KEY']}",
-  "client_email": "${clientEmail != '' ? clientEmail : Platform.environment['CLIENT_EMAIL']}",
-  "client_id": "${clientId != '' ? clientId : Platform.environment['CLIENT_ID']}",
-  "auth_uri": "${authUri != '' ? authUri : Platform.environment['AUTH_URI']}",
-  "token_uri": "${tokenUri != '' ? tokenUri : Platform.environment['TOKEN_URI']}",
-  "auth_provider_x509_cert_url": "${authProviderX509CertUrl != '' ? authProviderX509CertUrl : Platform.environment['AUTH_PROVIDER_X509_CERT_URL']}",
-  "client_x509_cert_url": "${clientX509CertUrl != '' ? clientX509CertUrl : Platform.environment['CLIENT_X509_CERT_URL']}",
-  "universe_domain": "${universeDomain != '' ? universeDomain : Platform.environment['UNIVERSE_DOMAIN']}"
+  "type": "$type",
+  "project_id": "$projectId",
+  "private_key_id": "$privateKeyId",
+  "private_key": "$privateKey",
+  "client_email": "$clientEmail",
+  "client_id": "$clientId",
+  "auth_uri": "$authUri",
+  "token_uri": "$tokenUri",
+  "auth_provider_x509_cert_url": "$authProviderX509CertUrl",
+  "client_x509_cert_url": "$clientX509CertUrl",
+  "universe_domain": "$universeDomain"
 }
 ''';
 
