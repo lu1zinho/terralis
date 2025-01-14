@@ -28,6 +28,20 @@
 
   <title>terralis</title>
   <link rel="manifest" href="manifest.json">
+
+  <script>
+    window.TYPE = '${process.env.TYPE}';
+    window.PROJECT_ID = '${process.env.PROJECT_ID}';
+    window.PRIVATE_KEY_ID = '${process.env.PRIVATE_KEY_ID}';
+    window.PRIVATE_KEY = '${process.env.PRIVATE_KEY}';
+    window.CLIENT_EMAIL = '${process.env.CLIENT_EMAIL}';
+    window.CLIENT_ID = '${process.env.CLIENT_ID}';
+    window.AUTH_URI = '${process.env.AUTH_URI}';
+    window.TOKEN_URI = '${process.env.TOKEN_URI}';
+    window.AUTH_PROVIDER_X509_CERT_URL = '${process.env.AUTH_PROVIDER_X509_CERT_URL}';
+    window.CLIENT_X509_CERT_URL = '${process.env.CLIENT_X509_CERT_URL}';
+    window.UNIVERSE_DOMAIN = '${process.env.UNIVERSE_DOMAIN}';
+  </script>
 </head>
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
